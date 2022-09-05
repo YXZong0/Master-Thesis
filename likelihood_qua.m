@@ -1,5 +1,5 @@
 function f = likelihood_qua(coefsig,nB,Y,A,B)
-% calculate the likelihood function
+% calculate the likelihood function using gaussian quadrature
 % coefsig: initial parameters 
 % nB: the order of Bernstein
 % Y: observations
