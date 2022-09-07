@@ -11,7 +11,13 @@ function f = likelihood_qua(coefsig,nB,Y,A,B)
     theta = coefsig(1:(nB+1)); % coefficients 
     sig_mul = coefsig(nB+2); % multiplicative std
     sig_add = coefsig(nB+3); % additive std
-    fy_res = arrayfun(@(Y) fy(Y,theta,sig_mul,sig_add,nB,A,B),Y);
+    %fy_res = arrayfun(@(Y) fy(Y,theta,sig_mul,sig_add,nB,A,B), Y);
+    fy_res = zeros(length(Y),1);
+    %Y = gpuArray(Y);
+    parfor i = 1:length(Y)
+        fy_res(i) = fy(Y(i),theta,sig_mul,sig_add,nB,A,B);
+        %fy_res(i) = parfeval(backgroundPool,@fy,Y(i),theta,sig_mul,sig_add,nB,A,B);
+    end
     f = -sum(log(fy_res)); % to be minimized
     if f == Inf
         f = 99999; 
